@@ -3,7 +3,6 @@ package Homework4;
 /**
  * @author Shashwat Panigrahi
  *    e-mail: shashwat.panigrahi@stonybrook.edu
- *    Stony Brook ID: 114848893
  **/
 public class Packet {
     static int packetCount = 0;
