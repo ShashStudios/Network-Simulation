@@ -1,7 +1,6 @@
-package Homework4;
+package hw4;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * The <code>Router</code> class implements an ArrayList of <code>Packet</code>

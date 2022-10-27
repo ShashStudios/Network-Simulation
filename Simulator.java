@@ -1,7 +1,7 @@
-package Homework4;
+package hw4;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -95,8 +95,7 @@ public class Simulator {
             }
 
             //Fourth: Send packets from intermediate routers to destination
-            int pktSendToDest = 0;
-            for(int index =0 ; index< routers.size(); index++){
+            /*for(int index =0 ; index< routers.size(); index++){
                 Router router = routers.get(index);
                 Packet packet = router.peek();
                 if(packet != null && packet.getTimeToDest() == 0 && pktSendToDest<bandWidth){
@@ -105,18 +104,29 @@ public class Simulator {
                     System.out.println("Packet "+packet.getId()+" has successfully reached its destination: +"+(simulTime - packet.getTimeArrive()));
                     totalPacketsArrived++;
                     totalServiceTime = totalServiceTime + (simulTime-packet.getTimeArrive());
+                }
+            }*/
+            int pktSendToDest = 0;
+            for(int index = 0; index< routers.size(); index++){
+                Packet packet = routers.get(index).peek();
+                if(packet != null && packet.getTimeToDest() == 0){
+                    intRouterIndexQueue.add(index);
                 }
             }
-            for(int index =0 ; index< routers.size(); index++){
+            Iterator<Integer> itr = intRouterIndexQueue.iterator();
+            while(itr.hasNext()){
+                Integer index = itr.next();
                 Router router = routers.get(index);
                 Packet packet = router.peek();
-                if(packet != null && packet.getTimeToDest() == 0 && pktSendToDest<bandWidth){
+                if(pktSendToDest<bandWidth){
                     pktSendToDest++;
                     router.dequeue();
                     System.out.println("Packet "+packet.getId()+" has successfully reached its destination: +"+(simulTime - packet.getTimeArrive()));
                     totalPacketsArrived++;
                     totalServiceTime = totalServiceTime + (simulTime-packet.getTimeArrive());
+                    itr.remove();
                 }
+
             }
             System.out.println(this.toString());
             System.out.println();
@@ -211,10 +221,11 @@ public class Simulator {
 
 
                 System.out.println("Simulation ending...\n" +
-                        "        Total service time: "+ simulator.totalServiceTime+"\n" +
-                        "        Total packets served: "+simulator.totalPacketsArrived+"\n" +
-                        "        Average service time per packet: "+ df.format(average)+"\n" +
-                        "        Total packets dropped: "+simulator.packetsDropped);
+                        "Total service time: "+ simulator.totalServiceTime+"\n" +
+                        "Total packets served: "+simulator.totalPacketsArrived+"\n" +
+                        "Average service time per packet: "+ df.format(average)+"\n" +
+                        "Total packets dropped: "+simulator.packetsDropped);
+                System.out.println();
                 System.out.print("Do you want to run another simulation:(y/n):");
                 String option = sc.next().trim();
                 isDone =(option.equalsIgnoreCase("y")? false:true);
